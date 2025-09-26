@@ -4,105 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How am I experiencing this moment of being alive?</title>
+    <link rel="icon" href="https://fav.farm/✨" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'sunset-orange': '#ff7849',
-                        'warm-coral': '#ff9a8b',
-                        'soft-peach': '#ffeaa7',
-                        'ocean-blue': '#74b9ff',
-                        'mint-green': '#00b894',
-                        'lavender': '#a29bfe',
+                        'soft-blue': '#e3f2fd',
+                        'light-purple': '#f3e5f5',
+                        'mint': '#e8f5e8',
+                        'peach': '#fff3e0',
+                        'accent-blue': '#42a5f5',
+                        'accent-purple': '#ab47bc',
+                        'accent-green': '#66bb6a',
+                        'accent-orange': '#ff7043',
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-gradient-to-br from-warm-coral to-ocean-blue min-h-screen p-4">
-    <div class="max-w-2xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">
+<body class="bg-gray-100 min-h-screen">
+    <!-- Fixed Header -->
+    <div class="bg-white shadow-sm border-b sticky top-0 z-10">
+        <div class="max-w-4xl mx-auto px-4 py-6">
+            <h1 class="text-2xl font-bold text-gray-900 text-center">
                 How am I experiencing this moment of being alive?
             </h1>
-            <p class="text-white/80 text-lg">A moment-by-moment journal of your experience</p>
         </div>
+    </div>
 
-        <!-- Entry Input -->
-        <div class="bg-white/20 backdrop-blur-lg rounded-3xl p-6 mb-8 shadow-xl border border-white/30">
-            <div class="space-y-4">
-                <div>
-                    <label for="entryInput" class="block text-white font-semibold mb-2">Describe this moment:</label>
-                    <input 
-                        type="text" 
-                        id="entryInput" 
-                        placeholder="How am I experiencing this moment of being alive?"
-                        class="w-full px-4 py-3 rounded-2xl border-0 bg-white/90 backdrop-blur text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-sunset-orange/50 text-lg"
-                    />
-                </div>
-                <div>
-                    <label for="moodSelect" class="block text-white font-semibold mb-2">Mood:</label>
-                    <select 
-                        id="moodSelect" 
-                        class="px-4 py-3 rounded-2xl border-0 bg-white/90 backdrop-blur text-gray-800 focus:outline-none focus:ring-4 focus:ring-sunset-orange/50 text-lg"
-                    >
-                        <option value="Bad">😔 Bad</option>
-                        <option value="Good" selected>😊 Good</option>
-                        <option value="Excellent">🌟 Excellent</option>
-                    </select>
-                </div>
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- Quick Entry Card -->
+        <div class="bg-white rounded-xl shadow-sm border p-6 mb-8 sticky top-20 z-10">
+            <div class="flex items-center gap-4">
+                <input 
+                    type="text" 
+                    id="entryInput" 
+                    placeholder="How am I experiencing this moment of being alive?"
+                    class="flex-1 px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent"
+                />
+                <select 
+                    id="moodSelect" 
+                    class="px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent"
+                >
+                    <option value="Bad">😔</option>
+                    <option value="Good" selected>😊</option>
+                    <option value="Excellent">🌟</option>
+                </select>
             </div>
         </div>
 
-        <!-- Import/Export Controls -->
-        <div class="text-right mb-4">
-            <details class="inline-block">
-                <summary class="cursor-pointer text-white/60 hover:text-white/80 text-sm underline transition-colors">
-                    Backup & Restore
-                </summary>
-                <div class="bg-white/10 backdrop-blur rounded-2xl p-4 mt-2 border border-white/20">
-                    <div class="flex gap-3">
-                        <button 
-                            onclick="exportEntries()" 
-                            class="px-4 py-2 bg-white/20 text-white text-sm rounded-xl hover:bg-white/30 transition-all duration-200"
-                        >
-                            📥 Export
-                        </button>
-                        <div>
-                            <input 
-                                type="file" 
-                                id="importFile" 
-                                accept=".json" 
-                                style="display: none;" 
-                                onchange="importEntries(event)"
-                            />
-                            <button 
-                                onclick="document.getElementById('importFile').click()" 
-                                class="px-4 py-2 bg-white/20 text-white text-sm rounded-xl hover:bg-white/30 transition-all duration-200"
-                            >
-                                📤 Import
-                            </button>
-                        </div>
-                    </div>
-                    <div id="importExportMessage" class="mt-2 text-center text-white/80 text-xs"></div>
-                </div>
-            </details>
-        </div>
-
         <!-- Timeline -->
-        <div id="timeline" class="space-y-4">
+        <div id="timeline" class="space-y-3">
             <!-- Entries will be dynamically added here -->
         </div>
 
         <!-- Empty state -->
-        <div id="emptyState" class="text-center py-12">
-            <div class="text-6xl mb-4">✨</div>
-            <p class="text-white/80 text-xl">Start your journey by sharing how you're experiencing this moment!</p>
+        <div id="emptyState" class="text-center py-20">
+            <div class="text-8xl mb-6">✨</div>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-2">Your moment journal</h2>
+            <p class="text-gray-600">Start capturing how you're experiencing this moment of being alive</p>
         </div>
+    </div>
+
+    <!-- Floating Action Buttons -->
+    <div class="fixed bottom-6 right-6 flex flex-col gap-3">
+        <details class="relative">
+            <summary class="w-12 h-12 bg-gray-600 hover:bg-gray-700 text-white rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-all list-none">
+                ⚙️
+            </summary>
+            <div class="absolute bottom-14 right-0 bg-white rounded-lg shadow-lg border p-3 min-w-48">
+                <div class="flex gap-2">
+                    <button 
+                        onclick="exportEntries()" 
+                        class="px-3 py-2 bg-accent-blue text-white text-sm rounded-lg hover:bg-blue-600 transition-all duration-200 flex-1"
+                    >
+                        📥 Export
+                    </button>
+                    <input 
+                        type="file" 
+                        id="importFile" 
+                        accept=".json" 
+                        style="display: none;" 
+                        onchange="importEntries(event)"
+                    />
+                    <button 
+                        onclick="document.getElementById('importFile').click()" 
+                        class="px-3 py-2 bg-accent-purple text-white text-sm rounded-lg hover:bg-purple-600 transition-all duration-200 flex-1"
+                    >
+                        📤 Import
+                    </button>
+                </div>
+                <div id="importExportMessage" class="mt-2 text-center text-gray-600 text-xs"></div>
+            </div>
+        </details>
     </div>
 
     <script>
@@ -117,9 +115,27 @@
 
         // Mood configurations
         const moodConfig = {
-            'Bad': { emoji: '😔', color: 'from-red-400 to-red-600', bgColor: 'bg-red-100', textColor: 'text-red-800' },
-            'Good': { emoji: '😊', color: 'from-green-400 to-green-600', bgColor: 'bg-green-100', textColor: 'text-green-800' },
-            'Excellent': { emoji: '🌟', color: 'from-lavender to-sunset-orange', bgColor: 'bg-purple-100', textColor: 'text-purple-800' }
+            'Bad': { 
+                icon: '●', 
+                color: 'text-red-500',
+                bgColor: 'bg-red-50', 
+                borderColor: 'border-red-200', 
+                textColor: 'text-red-700' 
+            },
+            'Good': { 
+                icon: '●', 
+                color: 'text-blue-500',
+                bgColor: 'bg-blue-50', 
+                borderColor: 'border-blue-200', 
+                textColor: 'text-blue-700' 
+            },
+            'Excellent': { 
+                icon: '●', 
+                color: 'text-green-500',
+                bgColor: 'bg-green-50', 
+                borderColor: 'border-green-200', 
+                textColor: 'text-green-700' 
+            }
         };
 
         // Add entry function
@@ -301,28 +317,57 @@
 
             emptyState.style.display = 'none';
             
-            timeline.innerHTML = entries.map(entry => {
-                const config = moodConfig[entry.mood];
+            // Group entries by date
+            const groupedEntries = entries.reduce((groups, entry) => {
                 const date = new Date(entry.timestamp);
-                const timeStr = date.toLocaleString();
+                const dateKey = date.toDateString();
+                if (!groups[dateKey]) {
+                    groups[dateKey] = [];
+                }
+                groups[dateKey].push(entry);
+                return groups;
+            }, {});
+
+            // Render grouped entries
+            timeline.innerHTML = Object.entries(groupedEntries).map(([dateKey, dayEntries]) => {
+                const date = new Date(dateKey);
+                const isToday = date.toDateString() === new Date().toDateString();
+                const isYesterday = date.toDateString() === new Date(Date.now() - 86400000).toDateString();
                 
+                let dateLabel;
+                if (isToday) {
+                    dateLabel = 'Today';
+                } else if (isYesterday) {
+                    dateLabel = 'Yesterday';
+                } else {
+                    dateLabel = date.toLocaleDateString([], {weekday: 'long', month: 'long', day: 'numeric'});
+                }
+
+                const entriesHtml = dayEntries.map(entry => {
+                    const config = moodConfig[entry.mood];
+                    const time = new Date(entry.timestamp);
+                    const timeStr = time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    
+                    return `
+                        <div class="${config.bgColor} rounded-lg border ${config.borderColor} p-4 hover:shadow-sm transition-all duration-200">
+                            <div class="flex items-start gap-3">
+                                <div class="text-xs text-gray-500 font-medium mt-1 min-w-12">
+                                    ${timeStr}
+                                </div>
+                                <span class="text-xl mt-0.5 ${config.color}">${config.icon}</span>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-gray-800 leading-relaxed cursor-pointer hover:bg-white/50 rounded p-1 -m-1 transition-colors" ondblclick="makeEditable(this, ${entry.id})" title="💡 Double-click to edit this entry">${entry.description}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
                 return `
-                    <div class="bg-white/20 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30 transform hover:scale-[1.02] transition-all duration-200">
-                        <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0">
-                                <div class="w-12 h-12 rounded-full bg-gradient-to-r ${config.color} flex items-center justify-center text-2xl shadow-lg">
-                                    ${config.emoji}
-                                </div>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-center justify-between mb-2">
-                                    <span class="inline-block px-3 py-1 rounded-full ${config.bgColor} ${config.textColor} text-sm font-semibold">
-                                        ${entry.mood}
-                                    </span>
-                                    <span class="text-white/70 text-sm">${timeStr}</span>
-                                </div>
-                                <p class="text-white text-lg leading-relaxed cursor-pointer hover:bg-white/10 rounded-lg px-2 py-1 transition-colors" ondblclick="makeEditable(this, ${entry.id})" title="Double-click to edit">${entry.description}</p>
-                            </div>
+                    <div class="mb-8">
+                        <h2 class="text-lg font-semibold text-gray-700 mb-4 px-2">${dateLabel}</h2>
+                        <div class="space-y-3">
+                            ${entriesHtml}
                         </div>
                     </div>
                 `;
