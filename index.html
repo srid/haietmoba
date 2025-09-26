@@ -46,14 +46,32 @@
                     placeholder="How am I experiencing this moment of being alive?"
                     class="flex-1 px-4 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent"
                 />
-                <select 
-                    id="moodSelect" 
-                    class="px-4 py-3 border border-gray-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-accent-blue focus:border-transparent"
-                >
-                    <option value="Bad">😔</option>
-                    <option value="Good" selected>😊</option>
-                    <option value="Excellent">🌟</option>
-                </select>
+                <div class="flex gap-2">
+                    <button 
+                        type="button" 
+                        data-mood="Bad" 
+                        class="mood-btn w-10 h-10 rounded-lg bg-transparent flex items-center justify-center text-red-500 text-xl hover:bg-red-50 transition-colors" 
+                        title="Feeling bad"
+                    >
+                        ●
+                    </button>
+                    <button 
+                        type="button" 
+                        data-mood="Good" 
+                        class="mood-btn w-10 h-10 rounded bg-blue-50 border-2 border-blue-200 flex items-center justify-center text-blue-500 text-xl hover:bg-blue-50 transition-colors" 
+                        title="Feeling good"
+                    >
+                        ●
+                    </button>
+                    <button 
+                        type="button" 
+                        data-mood="Excellent" 
+                        class="mood-btn w-10 h-10 rounded-lg bg-transparent flex items-center justify-center text-green-500 text-xl hover:bg-green-50 transition-colors" 
+                        title="Feeling excellent"
+                    >
+                        ●
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -67,6 +85,13 @@
             <div class="text-8xl mb-6">✨</div>
             <h2 class="text-2xl font-semibold text-gray-800 mb-2">Your moment journal</h2>
             <p class="text-gray-600">Start capturing how you're experiencing this moment of being alive</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center py-8 mt-12">
+            <a href="https://github.com/srid/haietmoba" target="_blank" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">
+                View on GitHub
+            </a>
         </div>
     </div>
 
@@ -109,9 +134,11 @@
 
         // DOM elements
         const entryInput = document.getElementById('entryInput');
-        const moodSelect = document.getElementById('moodSelect');
         const timeline = document.getElementById('timeline');
         const emptyState = document.getElementById('emptyState');
+        
+        // Current selected mood
+        let selectedMood = 'Good';
 
         // Mood configurations
         const moodConfig = {
@@ -141,14 +168,13 @@
         // Add entry function
         function addEntry() {
             const description = entryInput.value.trim();
-            const mood = moodSelect.value;
 
             if (!description) return;
 
             const entry = {
                 id: Date.now(),
                 description,
-                mood,
+                mood: selectedMood,
                 timestamp: new Date().toISOString()
             };
 
@@ -156,9 +182,30 @@
             localStorage.setItem('journalEntries', JSON.stringify(entries));
             
             entryInput.value = '';
-            moodSelect.value = 'Good';
+            selectedMood = 'Good';
+            updateMoodButtons();
             
             renderTimeline();
+        }
+
+        // Update mood button selection
+        function updateMoodButtons() {
+            document.querySelectorAll('.mood-btn').forEach(btn => {
+                const mood = btn.getAttribute('data-mood');
+                const config = moodConfig[mood];
+                
+                if (mood === selectedMood) {
+                    // Active state: rounded square with border and background
+                    btn.classList.remove('rounded-lg', 'bg-transparent');
+                    btn.classList.add('rounded', `${config.bgColor}`, 'border-2', `${config.borderColor}`);
+                    btn.textContent = '●';
+                } else {
+                    // Inactive state: circle with no border/background
+                    btn.classList.remove('rounded', 'border-2', `${config.bgColor}`, `${config.borderColor}`);
+                    btn.classList.add('rounded-lg', 'bg-transparent');
+                    btn.textContent = '●';
+                }
+            });
         }
 
         // Edit entry function
@@ -350,11 +397,11 @@
                     
                     return `
                         <div class="${config.bgColor} rounded-lg border ${config.borderColor} p-4 hover:shadow-sm transition-all duration-200">
-                            <div class="flex items-start gap-3">
-                                <div class="text-xs text-gray-500 font-medium mt-1 min-w-12">
+                            <div class="flex items-center gap-3">
+                                <div class="text-xs text-gray-500 font-medium min-w-12">
                                     ${timeStr}
                                 </div>
-                                <span class="text-xl mt-0.5 ${config.color}">${config.icon}</span>
+                                <span class="text-xl ${config.color}" title="Feeling ${entry.mood.toLowerCase()}">${config.icon}</span>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-gray-800 leading-relaxed cursor-pointer hover:bg-white/50 rounded p-1 -m-1 transition-colors" ondblclick="makeEditable(this, ${entry.id})" title="💡 Double-click to edit this entry">${entry.description}</p>
                                 </div>
@@ -381,7 +428,16 @@
             }
         });
 
+        // Mood button event listeners
+        document.querySelectorAll('.mood-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                selectedMood = e.target.getAttribute('data-mood');
+                updateMoodButtons();
+            });
+        });
+
         // Initialize
+        updateMoodButtons();
         renderTimeline();
     </script>
 </body>
