@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How am I experiencing this moment of being alive?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sunset-orange': '#ff7849',
+                        'warm-coral': '#ff9a8b',
+                        'soft-peach': '#ffeaa7',
+                        'ocean-blue': '#74b9ff',
+                        'mint-green': '#00b894',
+                        'lavender': '#a29bfe',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-warm-coral to-ocean-blue min-h-screen p-4">
+    <div class="max-w-2xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2 drop-shadow-lg">
+                How am I experiencing this moment of being alive?
+            </h1>
+            <p class="text-white/80 text-lg">A moment-by-moment journal of your experience</p>
+        </div>
+
+        <!-- Entry Input -->
+        <div class="bg-white/20 backdrop-blur-lg rounded-3xl p-6 mb-8 shadow-xl border border-white/30">
+            <div class="space-y-4">
+                <div>
+                    <label for="entryInput" class="block text-white font-semibold mb-2">Describe this moment:</label>
+                    <input 
+                        type="text" 
+                        id="entryInput" 
+                        placeholder="How are you experiencing this moment?"
+                        class="w-full px-4 py-3 rounded-2xl border-0 bg-white/90 backdrop-blur text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-sunset-orange/50 text-lg"
+                    />
+                </div>
+                <div>
+                    <label for="moodSelect" class="block text-white font-semibold mb-2">Mood:</label>
+                    <select 
+                        id="moodSelect" 
+                        class="px-4 py-3 rounded-2xl border-0 bg-white/90 backdrop-blur text-gray-800 focus:outline-none focus:ring-4 focus:ring-sunset-orange/50 text-lg"
+                    >
+                        <option value="Bad">😔 Bad</option>
+                        <option value="Good" selected>😊 Good</option>
+                        <option value="Excellent">🌟 Excellent</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import/Export Controls -->
+        <div class="text-right mb-4">
+            <details class="inline-block">
+                <summary class="cursor-pointer text-white/60 hover:text-white/80 text-sm underline transition-colors">
+                    Backup & Restore
+                </summary>
+                <div class="bg-white/10 backdrop-blur rounded-2xl p-4 mt-2 border border-white/20">
+                    <div class="flex gap-3">
+                        <button 
+                            onclick="exportEntries()" 
+                            class="px-4 py-2 bg-white/20 text-white text-sm rounded-xl hover:bg-white/30 transition-all duration-200"
+                        >
+                            📥 Export
+                        </button>
+                        <div>
+                            <input 
+                                type="file" 
+                                id="importFile" 
+                                accept=".json" 
+                                style="display: none;" 
+                                onchange="importEntries(event)"
+                            />
+                            <button 
+                                onclick="document.getElementById('importFile').click()" 
+                                class="px-4 py-2 bg-white/20 text-white text-sm rounded-xl hover:bg-white/30 transition-all duration-200"
+                            >
+                                📤 Import
+                            </button>
+                        </div>
+                    </div>
+                    <div id="importExportMessage" class="mt-2 text-center text-white/80 text-xs"></div>
+                </div>
+            </details>
+        </div>
+
+        <!-- Timeline -->
+        <div id="timeline" class="space-y-4">
+            <!-- Entries will be dynamically added here -->
+        </div>
+
+        <!-- Empty state -->
+        <div id="emptyState" class="text-center py-12">
+            <div class="text-6xl mb-4">✨</div>
+            <p class="text-white/80 text-xl">Start your journey by sharing how you're experiencing this moment!</p>
+        </div>
+    </div>
+
+    <script>
+        // Journal entries storage
+        let entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+
+        // DOM elements
+        const entryInput = document.getElementById('entryInput');
+        const moodSelect = document.getElementById('moodSelect');
+        const timeline = document.getElementById('timeline');
+        const emptyState = document.getElementById('emptyState');
+
+        // Mood configurations
+        const moodConfig = {
+            'Bad': { emoji: '😔', color: 'from-red-400 to-red-600', bgColor: 'bg-red-100', textColor: 'text-red-800' },
+            'Good': { emoji: '😊', color: 'from-green-400 to-green-600', bgColor: 'bg-green-100', textColor: 'text-green-800' },
+            'Excellent': { emoji: '🌟', color: 'from-yellow-400 to-orange-500', bgColor: 'bg-yellow-100', textColor: 'text-yellow-800' }
+        };
+
+        // Add entry function
+        function addEntry() {
+            const description = entryInput.value.trim();
+            const mood = moodSelect.value;
+
+            if (!description) return;
+
+            const entry = {
+                id: Date.now(),
+                description,
+                mood,
+                timestamp: new Date().toISOString()
+            };
+
+            entries.unshift(entry); // Add to beginning for timeline order
+            localStorage.setItem('journalEntries', JSON.stringify(entries));
+            
+            entryInput.value = '';
+            moodSelect.value = 'Good';
+            
+            renderTimeline();
+        }
+
+        // Edit entry function
+        function editEntry(entryId, newDescription) {
+            const entryIndex = entries.findIndex(entry => entry.id === entryId);
+            if (entryIndex !== -1) {
+                entries[entryIndex].description = newDescription;
+                localStorage.setItem('journalEntries', JSON.stringify(entries));
+                renderTimeline();
+            }
+        }
+
+        // Handle double-click editing
+        function makeEditable(element, entryId) {
+            const currentText = element.textContent;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+            input.className = 'w-full px-2 py-1 rounded-lg bg-white/90 text-gray-800 focus:outline-none focus:ring-2 focus:ring-sunset-orange/50';
+            
+            // Replace text with input
+            element.innerHTML = '';
+            element.appendChild(input);
+            input.focus();
+            input.select();
+
+            // Save on Enter
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const newText = input.value.trim();
+                    if (newText) {
+                        editEntry(entryId, newText);
+                    } else {
+                        renderTimeline(); // Restore original if empty
+                    }
+                }
+            });
+
+            // Save on blur
+            input.addEventListener('blur', () => {
+                const newText = input.value.trim();
+                if (newText) {
+                    editEntry(entryId, newText);
+                } else {
+                    renderTimeline(); // Restore original if empty
+                }
+            });
+
+            // Cancel on Escape
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    renderTimeline(); // Restore original
+                }
+            });
+        }
+
+        // Export entries function
+        function exportEntries() {
+            const exportData = {
+                exportDate: new Date().toISOString(),
+                entryCount: entries.length,
+                version: "1.0",
+                entries: entries
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `journal-entries-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showMessage(`✅ Exported ${entries.length} entries successfully!`, 'success');
+        }
+
+        // Import entries function
+        function importEntries(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importData = JSON.parse(e.target.result);
+                    
+                    // Validate structure
+                    if (!importData.entries || !Array.isArray(importData.entries)) {
+                        throw new Error('Invalid file format: missing entries array');
+                    }
+
+                    // Validate each entry
+                    const validEntries = importData.entries.filter(entry => {
+                        return entry.id && entry.description && entry.mood && entry.timestamp &&
+                               ['Bad', 'Good', 'Excellent'].includes(entry.mood);
+                    });
+
+                    if (validEntries.length === 0) {
+                        throw new Error('No valid entries found in file');
+                    }
+
+                    // Get existing IDs to avoid duplicates
+                    const existingIds = new Set(entries.map(entry => entry.id));
+                    const newEntries = validEntries.filter(entry => !existingIds.has(entry.id));
+
+                    if (newEntries.length === 0) {
+                        showMessage('ℹ️ No new entries to import (all entries already exist)', 'info');
+                        return;
+                    }
+
+                    // Confirm import
+                    if (confirm(`Import ${newEntries.length} new entries? This will add them to your existing ${entries.length} entries.`)) {
+                        entries.push(...newEntries);
+                        entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Sort by newest first
+                        localStorage.setItem('journalEntries', JSON.stringify(entries));
+                        renderTimeline();
+                        showMessage(`✅ Successfully imported ${newEntries.length} entries!`, 'success');
+                    }
+
+                } catch (error) {
+                    showMessage(`❌ Import failed: ${error.message}`, 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Show message function
+        function showMessage(message, type = 'info') {
+            const messageDiv = document.getElementById('importExportMessage');
+            messageDiv.textContent = message;
+            messageDiv.className = `mt-4 text-center text-sm ${
+                type === 'success' ? 'text-green-300' :
+                type === 'error' ? 'text-red-300' :
+                'text-white/80'
+            }`;
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                messageDiv.textContent = '';
+                messageDiv.className = 'mt-4 text-center text-white/80 text-sm';
+            }, 5000);
+        }
+
+        // Render timeline
+        function renderTimeline() {
+            if (entries.length === 0) {
+                timeline.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            
+            timeline.innerHTML = entries.map(entry => {
+                const config = moodConfig[entry.mood];
+                const date = new Date(entry.timestamp);
+                const timeStr = date.toLocaleString();
+                
+                return `
+                    <div class="bg-white/20 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/30 transform hover:scale-[1.02] transition-all duration-200">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-12 h-12 rounded-full bg-gradient-to-r ${config.color} flex items-center justify-center text-2xl shadow-lg">
+                                    ${config.emoji}
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="inline-block px-3 py-1 rounded-full ${config.bgColor} ${config.textColor} text-sm font-semibold">
+                                        ${entry.mood}
+                                    </span>
+                                    <span class="text-white/70 text-sm">${timeStr}</span>
+                                </div>
+                                <p class="text-white text-lg leading-relaxed cursor-pointer hover:bg-white/10 rounded-lg px-2 py-1 transition-colors" ondblclick="makeEditable(this, ${entry.id})" title="Double-click to edit">${entry.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Event listeners
+        entryInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addEntry();
+            }
+        });
+
+        // Initialize
+        renderTimeline();
+    </script>
+</body>
+</html>
