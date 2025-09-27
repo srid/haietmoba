@@ -132,7 +132,68 @@
 
     <script>
         // Journal entries storage
-        let entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+        let entries = [];
+        
+        // Chrome extension storage helper functions
+        async function loadEntries() {
+            try {
+                if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
+                    // Chrome extension mode
+                    const result = await chrome.storage.sync.get(['journalEntries']);
+                    entries = result.journalEntries || [];
+                } else {
+                    // Fallback to localStorage for web version
+                    entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+                }
+            } catch (error) {
+                console.error('Error loading entries:', error);
+                // Fallback to localStorage
+                entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+            }
+            renderTimeline();
+        }
+        
+        async function saveEntries() {
+            try {
+                if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
+                    // Chrome extension mode
+                    await chrome.storage.sync.set({ journalEntries: entries });
+                } else {
+                    // Fallback to localStorage for web version
+                    localStorage.setItem('journalEntries', JSON.stringify(entries));
+                }
+            } catch (error) {
+                console.error('Error saving entries:', error);
+                // Fallback to localStorage
+                localStorage.setItem('journalEntries', JSON.stringify(entries));
+            }
+        }
+        
+        // Migration function to move data from localStorage to chrome.storage.sync
+        async function migrateFromLocalStorage() {
+            try {
+                if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
+                    const localData = localStorage.getItem('journalEntries');
+                    if (localData) {
+                        const localEntries = JSON.parse(localData);
+                        if (localEntries.length > 0) {
+                            // Check if we already have data in chrome.storage.sync
+                            const result = await chrome.storage.sync.get(['journalEntries']);
+                            if (!result.journalEntries || result.journalEntries.length === 0) {
+                                // Migrate data
+                                await chrome.storage.sync.set({ journalEntries: localEntries });
+                                entries = localEntries;
+                                console.log('Migrated', localEntries.length, 'entries from localStorage to chrome.storage.sync');
+                                // Remove from localStorage after successful migration
+                                localStorage.removeItem('journalEntries');
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Error during migration:', error);
+            }
+        }
 
         // DOM elements
         const entryInput = document.getElementById('entryInput');
@@ -168,7 +229,7 @@
         };
 
         // Add entry function
-        function addEntry() {
+        async function addEntry() {
             const description = entryInput.value.trim();
 
             if (!description) return;
@@ -181,7 +242,7 @@
             };
 
             entries.unshift(entry); // Add to beginning for timeline order
-            localStorage.setItem('journalEntries', JSON.stringify(entries));
+            await saveEntries();
             
             entryInput.value = '';
             selectedMood = 'Good';
@@ -211,11 +272,11 @@
         }
 
         // Edit entry function
-        function editEntry(entryId, newDescription) {
+        async function editEntry(entryId, newDescription) {
             const entryIndex = entries.findIndex(entry => entry.id === entryId);
             if (entryIndex !== -1) {
                 entries[entryIndex].description = newDescription;
-                localStorage.setItem('journalEntries', JSON.stringify(entries));
+                await saveEntries();
                 renderTimeline();
             }
         }
@@ -287,7 +348,7 @@
         }
 
         // Import entries function
-        function importEntries(event) {
+        async function importEntries(event) {
             const file = event.target.files[0];
             if (!file) return;
 
@@ -324,7 +385,7 @@
                     if (confirm(`Import ${newEntries.length} new entries? This will add them to your existing ${entries.length} entries.`)) {
                         entries.push(...newEntries);
                         entries.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)); // Sort by newest first
-                        localStorage.setItem('journalEntries', JSON.stringify(entries));
+                        await saveEntries();
                         renderTimeline();
                         showMessage(`✅ Successfully imported ${newEntries.length} entries!`, 'success');
                     }
@@ -439,8 +500,14 @@
         });
 
         // Initialize
-        updateMoodButtons();
-        renderTimeline();
+        async function initialize() {
+            await migrateFromLocalStorage();
+            await loadEntries();
+            updateMoodButtons();
+        }
+
+        // Start the app
+        initialize();
     </script>
 </body>
 </html>

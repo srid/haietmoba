@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "HAIETMOBA - How am I experiencing this moment of being alive?",
+  "version": "1.0",
+  "description": "A moment-by-moment journal of your experience with automatic sync across all your Chrome browsers.",
+  "permissions": [
+    "storage"
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "How am I experiencing this moment of being alive?"
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}
