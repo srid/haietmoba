@@ -121,17 +121,14 @@ function updateMoodButtons() {
         const mood = btn.getAttribute('data-mood');
         const config = moodConfig[mood];
         
+        // Remove all possible active/inactive classes first
+        btn.classList.remove('border-2', 'border-red-200', 'border-blue-200', 'border-green-200', 'bg-red-50', 'bg-blue-50', 'bg-green-50');
+        
         if (mood === selectedMood) {
-            // Active state: rounded square with border and background
-            btn.classList.remove('rounded-lg', 'bg-transparent');
-            btn.classList.add('rounded', `${config.bgColor}`, 'border-2', `${config.borderColor}`);
-            btn.textContent = '●';
-        } else {
-            // Inactive state: circle with no border/background
-            btn.classList.remove('rounded', 'border-2', `${config.bgColor}`, `${config.borderColor}`);
-            btn.classList.add('rounded-lg', 'bg-transparent');
-            btn.textContent = '●';
+            // Active state: add border and background
+            btn.classList.add('border-2', config.borderColor, config.bgColor);
         }
+        // Inactive state: no additional classes needed (base styles handle it)
     });
 }
 
