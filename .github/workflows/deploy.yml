@@ -27,6 +27,9 @@ jobs:
       - name: Setup Nix
         uses: nixbuild/nix-quick-install-action@v28
         
+      - name: Install just
+        run: nix profile install nixpkgs#just
+        
       - name: Build web version
         run: just build-web
       
