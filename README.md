@@ -23,7 +23,7 @@ Moment-by-moment journal app. Available as web app or Chrome extension.
 ## Storage
 
 - **Web version**: localStorage
-- **Chrome extension**: chrome.storage.session (session-scoped, not synced across devices)
+- **Chrome extension**: chrome.storage.sync (persistent, synced across devices)
 - Extension fails instead of falling back to localStorage for data integrity
 
 ## Development
