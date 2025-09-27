@@ -1,5 +1,8 @@
 # CSS build commands
 
+default:
+    @just --list
+
 # Build Tailwind CSS
 build:
     nix shell nixpkgs#tailwindcss -c tailwindcss -i ./src/input.css -o ./styles.css --minify --config ./tailwind.config.js

@@ -24,13 +24,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
+      - name: Setup Nix
+        uses: nixbuild/nix-quick-install-action@v28
+        
+      - name: Build web version
+        run: just build-web
+      
       - name: Setup Pages
         uses: actions/configure-pages@v4
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: 'dist/web'
       
       - name: Deploy to GitHub Pages
         id: deployment

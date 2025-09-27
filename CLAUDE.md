@@ -93,6 +93,12 @@ The app uses a hybrid storage system:
 - Build artifacts isolated in `dist/` and `css/styles.css`
 - Source files never modified during build process
 
+### Deployment
+- **GitHub Pages**: Automated deployment via `.github/workflows/deploy.yml` on pushes to `master`
+- **Build process**: Uses Nix to install dependencies and runs `just build-web`
+- **Artifact**: Uploads `dist/web/` directory containing the built web version
+- **URL**: Available at https://srid.github.io/haietmoba
+
 ### Security Considerations
 - Client-side only - no server communication
 - No external script loading (CSP compliant)
