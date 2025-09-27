@@ -4,7 +4,7 @@
 
 When making changes to this codebase:
 
-1. **NEVER commit or change git history** - Do not use `git commit`, `git push`, or any git commands that modify history unless explicitly told to by the user each and every time
+1. **NEVER commit or change git history** - Do not use `git commit`, `git push`, or any git commands that modify history unless explicitly told to by the user each and every time. When adding files to git, never use `git add .` - always use `git add` with explicit file paths
 2. **Always update documentation** - If you modify architecture, storage, features, or development workflow, update both `README.md` and this `CLAUDE.md` file accordingly
 3. **Keep README.md technical** - Focus on setup, usage, and technical details rather than marketing language
 4. **Keep CLAUDE.md comprehensive** - Document architectural decisions, data flow changes, and any new patterns introduced
@@ -63,7 +63,8 @@ The app uses a hybrid storage system:
 6. All changes immediately save to storage without confirmation
 
 ### Development Notes
-- No build process required - pure vanilla JS/CSS/HTML
+- Tailwind CSS build process using nix shell
+- `src/input.css` compiled to `styles.css` for CSP compliance
 - Event delegation used for dynamic content (timeline entries)
 - Responsive design with mobile-first approach
 - All external dependencies removed for Chrome extension compatibility
