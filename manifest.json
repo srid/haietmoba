@@ -7,8 +7,7 @@
     "storage"
   ],
   "action": {
-    "default_popup": "index.html",
-    "default_title": "How am I experiencing this moment of being alive?"
+    "default_title": "Open HAIETMOBA Journal"
   },
   "icons": {
     "16": "icon16.png",

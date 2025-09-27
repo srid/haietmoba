@@ -4,8 +4,14 @@
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === 'install') {
     console.log('HAIETMOBA extension installed');
-    // Migration will be handled in the main app
+    // Open the journal on first install
+    chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
   }
+});
+
+// Handle toolbar icon click - open journal in new tab
+chrome.action.onClicked.addListener((tab) => {
+  chrome.tabs.create({ url: chrome.runtime.getURL('index.html') });
 });
 
 // Handle storage changes and sync events
