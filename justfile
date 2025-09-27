@@ -15,22 +15,29 @@ open:
 
 # Build Tailwind CSS
 build-css:
-    nix shell nixpkgs#tailwindcss -c tailwindcss -i ./src/input.css -o ./styles.css --minify
+    nix shell nixpkgs#tailwindcss -c tailwindcss -i ./build/src/input.css -o ./styles.css --minify --config ./build/tailwind.config.js
+
+# Build extension folder
+build-extension: build-css
+    #!/bin/bash
+    mkdir -p dist/extension
+    cp -r extension/* dist/extension/
+    cp index.html app.js styles.css dist/extension/
+    echo "✅ Extension built in dist/extension/"
 
 # Package Chrome extension for distribution
-package: build-css
+package: build-extension
     #!/bin/bash
-    mkdir -p dist
-    zip -r dist/haietmoba-extension.zip . -x "dist/*" ".git/*" "*.md" "justfile" "sample.json" "src/*" "tailwind.config.js" "package.json" "node_modules/*"
+    cd dist && zip -r haietmoba-extension.zip extension/
     echo "✅ Extension packaged as dist/haietmoba-extension.zip"
 
-# Test Chrome extension locally (opens Chrome developer mode instructions)
-test-extension:
+# Test Chrome extension locally (opens Chrome developer mode instructions)  
+test-extension: build-extension
     #!/bin/bash
     echo "🔧 To test the Chrome extension:"
     echo "1. Open Chrome and go to chrome://extensions/"
     echo "2. Enable 'Developer mode' (top right)"
-    echo "3. Click 'Load unpacked' and select this directory"
+    echo "3. Click 'Load unpacked' and select the 'dist/extension' folder"
     echo "4. The extension should appear in your toolbar"
     echo ""
     echo "📱 To test sync:"
