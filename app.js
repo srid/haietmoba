@@ -121,14 +121,13 @@ function updateMoodButtons() {
         const mood = btn.getAttribute('data-mood');
         const config = moodConfig[mood];
         
-        // Remove all possible active/inactive classes first
-        btn.classList.remove('border-2', 'border-red-200', 'border-blue-200', 'border-green-200', 'bg-red-50', 'bg-blue-50', 'bg-green-50');
-        
         if (mood === selectedMood) {
-            // Active state: add border and background
-            btn.classList.add('border-2', config.borderColor, config.bgColor);
+            // Active: border + background
+            btn.className = `mood-btn w-10 h-10 rounded-full flex items-center justify-center text-xl transition-colors border-2 ${config.borderColor} ${config.bgColor} ${config.color}`;
+        } else {
+            // Inactive: just colored dot
+            btn.className = `mood-btn w-10 h-10 rounded-full flex items-center justify-center text-xl transition-colors ${config.color}`;
         }
-        // Inactive state: no additional classes needed (base styles handle it)
     });
 }
 
