@@ -29,10 +29,9 @@ Moment-by-moment journal app. Available as web app or Chrome extension.
 ## Development
 
 ```bash
-just serve      # Local server
+just open       # Open local web version in browser
 just build-css  # Build Tailwind CSS
 just package    # Build extension (includes CSS build)
-just deploy     # Push to GitHub Pages
 ```
 
 ### Build Process

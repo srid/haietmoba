@@ -4,9 +4,14 @@
 default:
     @just --list
 
-# Start local development server (Python)
-serve:
-    python3 -m http.server 8000
+# Open the local web version in default browser
+open:
+    #!/bin/bash
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        open index.html
+    else
+        xdg-open index.html
+    fi
 
 # Build Tailwind CSS
 build-css:
@@ -33,23 +38,10 @@ test-extension:
     echo "2. Add journal entries on one device"
     echo "3. Check if they appear on other devices automatically"
 
-# Deploy web version to GitHub Pages (commits and pushes)
-deploy:
-    git add .
-    git commit -m "Deploy latest version"
-    git push origin master
-    echo "🚀 Deployed to https://srid.github.io/haietmoba"
+
 
 # Clean up generated files
 clean:
     rm -rf dist/
     echo "🧹 Cleaned up build artifacts"
 
-# Show project info
-info:
-    @echo "📱 HAIETMOBA - How am I experiencing this moment of being alive?"
-    @echo ""
-    @echo "🌐 Web App: https://srid.github.io/haietmoba"
-    @echo "📦 Chrome Extension: Load unpacked from this directory"
-    @echo "🔗 Repository: https://github.com/srid/haietmoba"
-    @echo "✨ Features: Cross-device sync, mood tracking, timeline view"
