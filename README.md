@@ -29,9 +29,15 @@ Moment-by-moment journal app. Available as web app or Chrome extension.
 ## Development
 
 ```bash
-just serve     # Local server
-just package   # Build extension  
-just deploy    # Push to GitHub Pages
+just serve      # Local server
+just build-css  # Build Tailwind CSS
+just package    # Build extension (includes CSS build)
+just deploy     # Push to GitHub Pages
 ```
+
+### Build Process
+- Uses Tailwind CSS with build process (not CDN)
+- `src/input.css` → compiled to `styles.css`
+- Chrome extension CSP compliant
 
 All data is client-side only. Try importing `sample.json` for demo data.

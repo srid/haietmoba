@@ -4,12 +4,13 @@
 
 When making changes to this codebase:
 
-1. **Always update documentation** - If you modify architecture, storage, features, or development workflow, update both `README.md` and this `CLAUDE.md` file accordingly
-2. **Keep README.md technical** - Focus on setup, usage, and technical details rather than marketing language
-3. **Keep CLAUDE.md comprehensive** - Document architectural decisions, data flow changes, and any new patterns introduced
-4. **Update storage documentation** - If storage logic changes, update the Storage section in both files
-5. **Document new features** - Add any new functionality to the Features section in README.md
-6. **Update development commands** - If justfile targets change, update the Development section in README.md
+1. **NEVER commit or change git history** - Do not use `git commit`, `git push`, or any git commands that modify history unless explicitly told to by the user each and every time
+2. **Always update documentation** - If you modify architecture, storage, features, or development workflow, update both `README.md` and this `CLAUDE.md` file accordingly
+3. **Keep README.md technical** - Focus on setup, usage, and technical details rather than marketing language
+4. **Keep CLAUDE.md comprehensive** - Document architectural decisions, data flow changes, and any new patterns introduced
+5. **Update storage documentation** - If storage logic changes, update the Storage section in both files
+6. **Document new features** - Add any new functionality to the Features section in README.md
+7. **Update development commands** - If justfile targets change, update the Development section in README.md
 
 ## Architecture
 
