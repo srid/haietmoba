@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+/* Accent colors */
+.bg-accent-blue { 
+    background-color: #42a5f5; 
+}
+
+.text-accent-blue { 
+    color: #42a5f5; 
+}
+
+.ring-accent-blue { 
+    --tw-ring-color: rgba(66, 165, 245, 0.5); 
+}
+
+.focus\:ring-accent-blue:focus { 
+    --tw-ring-color: rgba(66, 165, 245, 0.5); 
+}

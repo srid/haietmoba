@@ -1,0 +1,33 @@
+# Chrome extension build commands
+
+default:
+    @just --list
+
+# Build extension for testing
+build:
+    #!/bin/bash
+    mkdir -p ../dist/extension
+    cp -r ./* ../dist/extension/
+    cp ../index.html ../app.js ../dist/extension/
+    cp ../css/styles.css ../dist/extension/styles.css
+    echo "✅ Extension built in ../dist/extension/"
+
+# Package extension for distribution
+package: build
+    #!/bin/bash
+    cd ../dist && zip -r haietmoba-extension.zip extension/
+    echo "✅ Extension packaged as ../dist/haietmoba-extension.zip"
+
+# Test Chrome extension locally (opens Chrome developer mode instructions)  
+test: build
+    #!/bin/bash
+    echo "🔧 To test the Chrome extension:"
+    echo "1. Open Chrome and go to chrome://extensions/"
+    echo "2. Enable 'Developer mode' (top right)"
+    echo "3. Click 'Load unpacked' and select the 'dist/extension' folder"
+    echo "4. The extension should appear in your toolbar"
+    echo ""
+    echo "📱 To test sync:"
+    echo "1. Install extension on multiple Chrome browsers (same Google account)"
+    echo "2. Add journal entries on one device"
+    echo "3. Check if they appear on other devices automatically"

@@ -1,0 +1,11 @@
+# Build outputs
+dist/
+
+# CSS build artifact
+css/styles.css
+
+# Node modules
+node_modules/
+
+# OS files
+.DS_Store
