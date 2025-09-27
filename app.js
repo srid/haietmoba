@@ -125,8 +125,8 @@ function updateMoodButtons() {
             // Active: dot with circle around it
             btn.className = `mood-btn w-10 h-10 rounded-full flex items-center justify-center text-xl transition-colors border-2 ${config.borderColor} ${config.bgColor} ${config.color} cursor-pointer`;
         } else {
-            // Inactive: just the dot, no circle
-            btn.className = `mood-btn text-xl transition-colors ${config.color} cursor-pointer`;
+            // Inactive: just the dot, same size container
+            btn.className = `mood-btn w-10 h-10 flex items-center justify-center text-xl transition-colors ${config.color} cursor-pointer`;
         }
     });
 }
