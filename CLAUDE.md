@@ -18,13 +18,28 @@ When making changes to this codebase:
 HAIETMOBA is a dual-mode journaling application that works as both a web app and Chrome extension. The architecture is designed for simplicity with vanilla JavaScript and no external dependencies.
 
 ### File Structure
+**Root level (shared files):**
 - `index.html` - Main HTML structure with semantic markup
 - `app.js` - Core JavaScript functionality and storage logic
-- `styles.css` - Custom CSS replacing Tailwind for Chrome extension CSP compliance
+- `justfile` - Main development automation commands
+- `sample.json` - Demo data for testing
+
+**`css/` folder (CSS build system):**
+- `src/input.css` - Tailwind CSS source
+- `styles.css` - Generated CSS output (build artifact)
+- `tailwind.config.js` - Tailwind configuration
+- `package.json` - CSS build dependencies
+- `justfile` - CSS build commands
+
+**`extension/` folder (Chrome extension):**
 - `manifest.json` - Chrome extension configuration (manifest v3)
 - `background.js` - Chrome extension service worker
-- `justfile` - Development automation commands
-- `sample.json` - Demo data for testing
+- `icons/` - Extension icons (16x16, 48x48, 128x128)
+- `justfile` - Extension build commands
+
+**`dist/` folder (build outputs):**
+- `web/` - Built web version
+- `extension/` - Built extension version
 
 ### Storage Architecture
 The app uses a hybrid storage system:
@@ -62,12 +77,21 @@ The app uses a hybrid storage system:
 5. Renders timeline and sets up event listeners
 6. All changes immediately save to storage without confirmation
 
+### Build System
+- **Justfile modules**: Main justfile uses `mod css` and `mod extension` to load modules from `css/justfile` and `extension/justfile`
+- **Tailwind CSS build**: `css/src/input.css` → `css/styles.css` using nix shell via `just css build`
+- **Clean builds**: All outputs go to `dist/` folder, no source pollution
+- **Web build**: `just build-web` creates `dist/web/` with correct CSS paths
+- **Extension build**: `just extension build` creates `dist/extension/` ready for Chrome
+- **Extension test**: `just extension test` builds and shows Chrome testing instructions
+- **Packaging**: `just extension package` creates distributable zip
+
 ### Development Notes
-- Tailwind CSS build process using nix shell
-- `src/input.css` compiled to `styles.css` for CSP compliance
 - Event delegation used for dynamic content (timeline entries)
 - Responsive design with mobile-first approach
 - All external dependencies removed for Chrome extension compatibility
+- Build artifacts isolated in `dist/` and `css/styles.css`
+- Source files never modified during build process
 
 ### Security Considerations
 - Client-side only - no server communication

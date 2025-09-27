@@ -29,14 +29,18 @@ Moment-by-moment journal app. Available as web app or Chrome extension.
 ## Development
 
 ```bash
-just open       # Open local web version in browser
-just build-css  # Build Tailwind CSS
-just package    # Build extension (includes CSS build)
+just open               # Build and open local web version in browser
+just build-web          # Build web version to dist/web/
+just css build          # Build CSS only
+just extension build    # Build extension to dist/extension/
+just extension test     # Build extension and show testing instructions
+just extension package  # Create distributable extension zip
 ```
 
 ### Build Process
-- Uses Tailwind CSS with build process (not CDN)
-- `src/input.css` → compiled to `styles.css`
-- Chrome extension CSP compliant
+- **Justfile modules**: `css/justfile` and `extension/justfile` as proper modules
+- **Tailwind CSS**: `css/src/input.css` → `css/styles.css`
+- **Clean builds**: All outputs go to `dist/` folder
+- **Chrome extension CSP compliant**
 
 All data is client-side only. Try importing `sample.json` for demo data.
