@@ -2,17 +2,17 @@
 
 A moment-by-moment journalmoment-by-moment journal app. Available as web app thator capturesChrome yourextension experiencewithcross-devicesync.
 
-🌐 **Web App**: [https://srid.github.io/haietmoba](https://srid.github.io/haietmoba)  
+🌐 **Web App**: [https://srid.github.io/haietmoba](https://srid.github.io/haietmoba)
 🔗 **Article**: [https://srid.ca/HAIETMOBA](https://srid.ca/HAIETMOBA)
 
 ## Features
 
-✨ **Simple Journaling**: Answer "How am I experiencing this moment of being alive?" with a quick entry  
-🎯 **Mood Tracking**: Three moods with color-coded visual indicators (Bad, Good, Excellent)  
-📅 **Timeline View**: Entries grouped by day with "Today/Yesterday" labels  
-✏️ **Inline Editing**: Double-click any entry to edit in-place  
-📱 **Mobile Responsive**: Works perfectly on desktop and mobile  
-🔄 **Import/Export**: Backup and restore your entries as JSON  
+✨ **Simple Journaling**: Answer "How am I experiencing this moment of being alive?" with a quick entry
+🎯 **Mood Tracking**: Three moods with color-coded visual indicators (Bad, Good, Excellent)
+📅 **Timeline View**: Entries grouped by day with "Today/Yesterday" labels
+✏️ **Inline Editing**: Double-click any entry to edit in-place
+📱 **Mobile Responsive**: Works perfectly on desktop and mobile
+🔄 **Import/Export**: Backup and restore your entries as JSON
 🎨 **Clean Design**: Crisp, light, and playful interface
 
 ## Chrome Extension (Recommended)
@@ -66,7 +66,7 @@ Try importing `sample.json` to see the app with realistic demo data spanning sev
 - **Client-side only**: No server, no tracking, your data stays private
 - **Storage**: localStorage (web) or chrome.storage.sync (extension)
 - **Framework**: Vanilla JavaScript with custom CSS
-- **Responsive**: Mobile-first design with Flexbox layout🌐 **Web App**: [https://srid.github.io/haietmoba](https://srid.github.io/haietmoba)  
+- **Responsive**: Mobile-first design with Flexbox layout🌐 **Web App**: [https://srid.github.io/haietmoba](https://srid.github.io/haietmoba)
 🔗 **Article**: [https://srid.ca/HAIETMOBA](https://srid.ca/HAIETMOBA)
 
 ## Features

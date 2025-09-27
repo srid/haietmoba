@@ -6,53 +6,51 @@ let entries = [];
 // Chrome extension storage helper functions
 async function loadEntries() {
     try {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-            // Chrome extension mode
-            const result = await chrome.storage.sync.get(['journalEntries']);
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+            // Chrome extension mode - use session storage for sensitive journal data
+            const result = await chrome.storage.session.get(['journalEntries']);
             entries = result.journalEntries || [];
         } else {
-            // Fallback to localStorage for web version
+            // Web version fallback to localStorage
             entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
         }
     } catch (error) {
         console.error('Error loading entries:', error);
-        // Fallback to localStorage
-        entries = JSON.parse(localStorage.getItem('journalEntries') || '[]');
+        throw error; // Don't fallback in extension mode
     }
     renderTimeline();
 }
 
 async function saveEntries() {
     try {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-            // Chrome extension mode
-            await chrome.storage.sync.set({ journalEntries: entries });
+        if (typeof chrome !== 'undefined' && chrome.storage) {
+            // Chrome extension mode - use session storage for sensitive journal data
+            await chrome.storage.session.set({ journalEntries: entries });
         } else {
-            // Fallback to localStorage for web version
+            // Web version fallback to localStorage
             localStorage.setItem('journalEntries', JSON.stringify(entries));
         }
     } catch (error) {
         console.error('Error saving entries:', error);
-        // Fallback to localStorage
-        localStorage.setItem('journalEntries', JSON.stringify(entries));
+        throw error; // Don't fallback in extension mode
     }
 }
 
-// Migration function to move data from localStorage to chrome.storage.sync
+// Migration function to move data from localStorage to chrome.storage.session
 async function migrateFromLocalStorage() {
     try {
-        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
+        if (typeof chrome !== 'undefined' && chrome.storage) {
             const localData = localStorage.getItem('journalEntries');
             if (localData) {
                 const localEntries = JSON.parse(localData);
                 if (localEntries.length > 0) {
-                    // Check if we already have data in chrome.storage.sync
-                    const result = await chrome.storage.sync.get(['journalEntries']);
+                    // Check if we already have data in chrome.storage.session
+                    const result = await chrome.storage.session.get(['journalEntries']);
                     if (!result.journalEntries || result.journalEntries.length === 0) {
                         // Migrate data
-                        await chrome.storage.sync.set({ journalEntries: localEntries });
+                        await chrome.storage.session.set({ journalEntries: localEntries });
                         entries = localEntries;
-                        console.log('Migrated', localEntries.length, 'entries from localStorage to chrome.storage.sync');
+                        console.log('Migrated', localEntries.length, 'entries from localStorage to chrome.storage.session');
                         // Remove from localStorage after successful migration
                         localStorage.removeItem('journalEntries');
                     }
