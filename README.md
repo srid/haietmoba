@@ -6,7 +6,7 @@ Moment-by-moment journal app with client-side data storage.[^1] Available as web
 🔗 **Article**: [https://srid.ca/HAIETMOBA](https://srid.ca/HAIETMOBA)
 
 > [!NOTE]
-> This project is largely LLM-generated.
+> This project is [largely LLM-generated](https://x.com/sridca/status/1971968939954409592).
 
 ## Features
 
