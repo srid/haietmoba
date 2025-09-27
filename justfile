@@ -8,11 +8,15 @@ default:
 serve:
     python3 -m http.server 8000
 
+# Build Tailwind CSS
+build-css:
+    nix shell nixpkgs#tailwindcss -c tailwindcss -i ./src/input.css -o ./styles.css --minify
+
 # Package Chrome extension for distribution
-package:
+package: build-css
     #!/bin/bash
     mkdir -p dist
-    zip -r dist/haietmoba-extension.zip . -x "dist/*" ".git/*" "*.md" "justfile" "sample.json"
+    zip -r dist/haietmoba-extension.zip . -x "dist/*" ".git/*" "*.md" "justfile" "sample.json" "src/*" "tailwind.config.js" "package.json" "node_modules/*"
     echo "✅ Extension packaged as dist/haietmoba-extension.zip"
 
 # Test Chrome extension locally (opens Chrome developer mode instructions)
