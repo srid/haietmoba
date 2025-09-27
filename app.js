@@ -145,6 +145,20 @@ async function editEntry(entryId, newDescription) {
     }
 }
 
+// Delete entry function
+async function deleteEntry(entryId) {
+    const entryIndex = entries.findIndex(entry => entry.id === entryId);
+    if (entryIndex !== -1) {
+        const entry = entries[entryIndex];
+        if (confirm(`Delete this entry: "${entry.description}"?`)) {
+            entries.splice(entryIndex, 1);
+            await saveEntries();
+            renderTimeline();
+            showMessage('✅ Entry deleted successfully!', 'success');
+        }
+    }
+}
+
 // Handle double-click editing
 function makeEditable(element, entryId) {
     const currentText = element.textContent;
@@ -323,15 +337,18 @@ function renderTimeline() {
             const timeStr = time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             
             return `
-                <div class="${config.bgColor} rounded-lg border ${config.borderColor} p-4 hover:shadow-sm transition-all duration-200">
+                <div class="entry-item group ${config.bgColor} rounded-lg border ${config.borderColor} p-4 hover:shadow-sm transition-all duration-200 relative">
                     <div class="flex items-center gap-3">
                         <div class="text-xs text-gray-500 font-medium min-w-12">
                             ${timeStr}
                         </div>
                         <span class="text-xl ${config.color}" title="Feeling ${entry.mood.toLowerCase()}">${config.icon}</span>
                         <div class="flex-1 min-w-0">
-                            <p class="text-gray-800 leading-relaxed cursor-pointer hover:bg-white/50 rounded p-1 -m-1 transition-colors" ondblclick="makeEditable(this, ${entry.id})" title="💡 Double-click to edit this entry">${entry.description}</p>
+                            <p class="editable-entry text-gray-800 leading-relaxed cursor-pointer hover:bg-white/50 rounded p-1 -m-1 transition-colors" data-entry-id="${entry.id}" title="💡 Double-click to edit this entry">${entry.description}</p>
                         </div>
+                        <button class="delete-btn opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs" data-entry-id="${entry.id}" title="Delete entry">
+                            ×
+                        </button>
                     </div>
                 </div>
             `;
@@ -384,6 +401,14 @@ function setupEventListeners() {
         if (e.target.classList.contains('editable-entry')) {
             const entryId = parseInt(e.target.getAttribute('data-entry-id'));
             makeEditable(e.target, entryId);
+        }
+    });
+
+    // Timeline click handlers for delete - delegated event listener
+    timeline.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-btn')) {
+            const entryId = parseInt(e.target.getAttribute('data-entry-id'));
+            deleteEntry(entryId);
         }
     });
 }
