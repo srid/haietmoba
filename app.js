@@ -394,10 +394,10 @@ function updateStorageIndicator() {
     if (!indicator) return;
     
     if (typeof chrome !== 'undefined' && chrome.storage) {
-        indicator.textContent = 'Storage: Chrome Session';
+        indicator.textContent = 'Storage: chrome.storage.session';
         indicator.className = 'text-xs text-blue-600 px-2 py-1 bg-blue-50 rounded-full';
     } else {
-        indicator.textContent = 'Storage: Browser Local';
+        indicator.textContent = 'Storage: localStorage';
         indicator.className = 'text-xs text-gray-600 px-2 py-1 bg-gray-50 rounded-full';
     }
 }
