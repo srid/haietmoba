@@ -1,16 +1,63 @@
-This is a client-side web app that uses local storage to store your journal entries. Each journal entry is a response to the question "How am I experiencing this moment of being alive?". Thus, this response pertains to what is (affectively) that very moment only.
+# CLAUDE.md
 
-The main UI shows a 'timline' of these entries in the best visual way possible.
+## Architecture
 
-Each entry has:
+### Overview
+HAIETMOBA is a dual-mode journaling application that works as both a web app and Chrome extension. The architecture is designed for simplicity with vanilla JavaScript and no external dependencies.
 
-- Description: describing the 'how' in the question
-- Mood: Bad, Good, Excellent
+### File Structure
+- `index.html` - Main HTML structure with semantic markup
+- `app.js` - Core JavaScript functionality and storage logic
+- `styles.css` - Custom CSS replacing Tailwind for Chrome extension CSP compliance
+- `manifest.json` - Chrome extension configuration (manifest v3)
+- `background.js` - Chrome extension service worker
+- `justfile` - Development automation commands
+- `sample.json` - Demo data for testing
 
-At the top is an input box where you can enter your journal entry—by typing it out and hitting 'enter'. A dropdown menu allows you to select the mood of your entry (default mood = Good).
+### Storage Architecture
+The app uses a hybrid storage system:
 
-## Design
+- **Web version**: Uses `localStorage` for client-side persistence
+- **Chrome extension**: Uses `chrome.storage.sync` for cross-device synchronization
+- **Migration**: Automatically migrates data from localStorage to chrome.storage.sync when first using extension
+- **Failure handling**: Extension mode fails hard instead of falling back to localStorage for data integrity
 
-Tailwind CDN is used.
+### Core Components
 
-Colors are vibrant and playful, reflecting a kid like ambiance.
+#### Entry Management
+- Entries stored as JSON objects with `timestamp`, `mood`, and `description`
+- Three mood levels: Bad (red), Good (blue), Excellent (green)
+- Timeline view grouped by day with relative date labels
+
+#### User Interface
+- Sticky header with app title linking to https://srid.ca/HAIETMOBA
+- Fixed input area with mood selector (Good is default)
+- Timeline with double-click editing functionality
+- Footer with storage indicator and GitHub link
+- Floating settings button with import/export functionality
+
+#### Chrome Extension Features
+- Manifest v3 service worker architecture
+- CSP compliance (no inline scripts, external CDNs, or eval)
+- Toolbar icon opens app in new tab
+- Blue smiley face icon (light blue fill #93c5fd, dark blue stroke #1e40af)
+
+### Data Flow
+1. App initializes and detects environment (web vs extension)
+2. Updates storage indicator in footer
+3. Attempts migration from localStorage if in extension mode
+4. Loads entries from appropriate storage backend
+5. Renders timeline and sets up event listeners
+6. All changes immediately save to storage without confirmation
+
+### Development Notes
+- No build process required - pure vanilla JS/CSS/HTML
+- Event delegation used for dynamic content (timeline entries)
+- Responsive design with mobile-first approach
+- All external dependencies removed for Chrome extension compatibility
+
+### Security Considerations
+- Client-side only - no server communication
+- No external script loading (CSP compliant)
+- No eval() or inline event handlers
+- Storage APIs handle data persistence securely
