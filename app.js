@@ -122,11 +122,11 @@ function updateMoodButtons() {
         const config = moodConfig[mood];
         
         if (mood === selectedMood) {
-            // Active: border + background
+            // Active: dot with circle around it
             btn.className = `mood-btn w-10 h-10 rounded-full flex items-center justify-center text-xl transition-colors border-2 ${config.borderColor} ${config.bgColor} ${config.color}`;
         } else {
-            // Inactive: just colored dot
-            btn.className = `mood-btn w-10 h-10 rounded-full flex items-center justify-center text-xl transition-colors ${config.color}`;
+            // Inactive: just the dot, no circle
+            btn.className = `mood-btn flex items-center justify-center text-xl transition-colors ${config.color}`;
         }
     });
 }
