@@ -4,25 +4,34 @@
 default:
     @just --list
 
+# Build local web version
+build-web: build-css
+    #!/bin/bash
+    mkdir -p dist/web
+    cp index.html app.js dist/web/
+    cp css/styles.css dist/web/styles.css
+    echo "✅ Web version built in dist/web/"
+
 # Open the local web version in default browser
-open:
+open: build-web
     #!/bin/bash
     if [[ "$OSTYPE" == "darwin"* ]]; then
-        open index.html
+        open dist/web/index.html
     else
-        xdg-open index.html
+        xdg-open dist/web/index.html
     fi
 
 # Build Tailwind CSS
 build-css:
-    nix shell nixpkgs#tailwindcss -c tailwindcss -i ./build/src/input.css -o ./styles.css --minify --config ./build/tailwind.config.js
+    cd css && just build
 
 # Build extension folder
 build-extension: build-css
     #!/bin/bash
     mkdir -p dist/extension
     cp -r extension/* dist/extension/
-    cp index.html app.js styles.css dist/extension/
+    cp index.html app.js dist/extension/
+    cp css/styles.css dist/extension/styles.css
     echo "✅ Extension built in dist/extension/"
 
 # Package Chrome extension for distribution
