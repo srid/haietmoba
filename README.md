@@ -5,6 +5,9 @@ Moment-by-moment journal app with client-side data storage.[^1] Available as web
 🌐 **Web App**: [https://srid.github.io/haietmoba](https://srid.github.io/haietmoba)  
 🔗 **Article**: [https://srid.ca/HAIETMOBA](https://srid.ca/HAIETMOBA)
 
+> [!NOTE]
+> This project is largely LLM-generated.
+
 ## Features
 
 - Simple journaling with mood tracking (Bad, Good, Excellent)
