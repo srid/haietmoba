@@ -346,9 +346,9 @@ function renderTimeline() {
                         <div class="flex-1 min-w-0">
                             <p class="editable-entry text-gray-800 leading-relaxed cursor-pointer hover:bg-white/50 rounded p-1 -m-1 transition-colors" data-entry-id="${entry.id}" title="💡 Double-click to edit this entry">${entry.description}</p>
                         </div>
-                        <button class="delete-btn opacity-0 group-hover:opacity-100 transition-opacity duration-200 w-5 h-5 text-gray-400 hover:text-red-500 flex items-center justify-center text-sm" data-entry-id="${entry.id}" title="Delete entry">
+                        <span class="delete-btn opacity-0 group-hover:opacity-100 transition-all duration-200 text-gray-400 hover:text-red-500 cursor-pointer" data-entry-id="${entry.id}" title="Delete entry">
                             🗑️
-                        </button>
+                        </span>
                     </div>
                 </div>
             `;
