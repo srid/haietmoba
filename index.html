@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How am I experiencing this moment of being alive?</title>
-    <link rel="icon" href="https://fav.farm/✨" />
+    <meta name="description" content="Moment-by-moment journal app with mood tracking">
+    <meta name="theme-color" content="#3b82f6">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="HAIETMOBA">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -96,5 +103,19 @@
     </div>
 
     <script src="app.js"></script>
+    <script>
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>

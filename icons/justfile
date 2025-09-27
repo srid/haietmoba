@@ -1,0 +1,35 @@
+# Icon generation and conversion
+
+# Default target - show available commands
+default:
+    @just --list
+
+# Generate PWA icons from the extension's 128px icon
+generate-pwa:
+    #!/bin/bash
+    echo "🎨 Generating PWA icons from extension icon..."
+    nix shell nixpkgs#imagemagick -c convert icon128.png -resize 192x192 icon-192.png
+    nix shell nixpkgs#imagemagick -c convert icon128.png -resize 512x512 icon-512.png
+    echo "✅ PWA icons generated: icon-192.png, icon-512.png"
+
+# Generate all icons from source SVG (if we have one)
+generate-all:
+    #!/bin/bash
+    if [ ! -f "icon.svg" ]; then
+        echo "❌ No icon.svg source file found"
+        exit 1
+    fi
+    echo "🎨 Generating all icons from SVG source..."
+    nix shell nixpkgs#librsvg -c rsvg-convert icon.svg -w 16 -h 16 -o icon16.png
+    nix shell nixpkgs#librsvg -c rsvg-convert icon.svg -w 48 -h 48 -o icon48.png  
+    nix shell nixpkgs#librsvg -c rsvg-convert icon.svg -w 128 -h 128 -o icon128.png
+    nix shell nixpkgs#librsvg -c rsvg-convert icon.svg -w 192 -h 192 -o icon-192.png
+    nix shell nixpkgs#librsvg -c rsvg-convert icon.svg -w 512 -h 512 -o icon-512.png
+    echo "✅ All icons generated"
+
+# Clean generated icons (keep only source files)
+clean:
+    #!/bin/bash
+    echo "🧹 Cleaning generated icon files..."
+    rm -f icon-192.png icon-512.png
+    echo "✅ Generated icons cleaned"

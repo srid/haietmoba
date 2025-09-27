@@ -2,7 +2,7 @@
 
 Moment-by-moment journal app with client-side data storage.[^1] Available as web app or Chrome extension.
 
-🌐 **Web App**: [https://srid.github.io/haietmoba](https://srid.github.io/haietmoba)  
+🌐 **Web App**: [https://haietmoba.naivete.me](https://haietmoba.naivete.me)
 🔗 **Article**: [https://srid.ca/HAIETMOBA](https://srid.ca/HAIETMOBA)
 
 > [!NOTE]
@@ -11,10 +11,11 @@ Moment-by-moment journal app with client-side data storage.[^1] Available as web
 ## Features
 
 - Simple journaling with mood tracking (Bad, Good, Excellent)
-- Timeline view grouped by day  
+- Timeline view grouped by day
 - Double-click to edit entries
 - Import/export JSON backup
 - Chrome extension with session storage
+- Progressive Web App (PWA) - installable on mobile devices
 
 ## Chrome Extension Setup
 
@@ -23,6 +24,17 @@ Moment-by-moment journal app with client-side data storage.[^1] Available as web
 3. Chrome → `chrome://extensions/` → Enable "Developer mode"
 4. Click "Load unpacked" → Select the `dist/extension/` folder
 5. Click extension icon to open
+
+## PWA Installation
+
+**Android Chrome:**
+1. Open [https://srid.github.io/haietmoba](https://srid.github.io/haietmoba) in Chrome
+2. Tap the menu (⋮) → "Install app" or look for the install prompt
+3. App will be added to your home screen
+
+**iOS Safari:**
+1. Open the web app in Safari
+2. Tap the share button → "Add to Home Screen"
 
 ## Storage
 

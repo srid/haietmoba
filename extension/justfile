@@ -10,6 +10,7 @@ build:
     cp -r ./* ../dist/extension/
     cp ../index.html ../app.js ../dist/extension/
     cp ../css/styles.css ../dist/extension/styles.css
+    cp -r ../icons ../dist/extension/
     echo "✅ Extension built in ../dist/extension/"
 
 # Package extension for distribution
