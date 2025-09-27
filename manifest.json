@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "HAIETMOBA - How am I experiencing this moment of being alive?",
+  "name": "HAIETMOBA",
   "version": "1.0",
   "description": "A moment-by-moment journal of your experience with automatic sync across all your Chrome browsers.",
   "permissions": [

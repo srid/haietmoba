@@ -388,9 +388,24 @@ function setupEventListeners() {
     });
 }
 
+// Update storage indicator in footer
+function updateStorageIndicator() {
+    const indicator = document.getElementById('storageIndicator');
+    if (!indicator) return;
+    
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+        indicator.textContent = 'Storage: Chrome Session';
+        indicator.className = 'text-xs text-blue-600 px-2 py-1 bg-blue-50 rounded-full';
+    } else {
+        indicator.textContent = 'Storage: Browser Local';
+        indicator.className = 'text-xs text-gray-600 px-2 py-1 bg-gray-50 rounded-full';
+    }
+}
+
 // Initialize
 async function initialize() {
     setupEventListeners();
+    updateStorageIndicator();
     await migrateFromLocalStorage();
     await loadEntries();
     updateMoodButtons();
