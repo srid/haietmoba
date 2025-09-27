@@ -149,13 +149,10 @@ async function editEntry(entryId, newDescription) {
 async function deleteEntry(entryId) {
     const entryIndex = entries.findIndex(entry => entry.id === entryId);
     if (entryIndex !== -1) {
-        const entry = entries[entryIndex];
-        if (confirm(`Delete this entry: "${entry.description}"?`)) {
-            entries.splice(entryIndex, 1);
-            await saveEntries();
-            renderTimeline();
-            showMessage('✅ Entry deleted successfully!', 'success');
-        }
+        entries.splice(entryIndex, 1);
+        await saveEntries();
+        renderTimeline();
+        showMessage('✅ Entry deleted', 'success');
     }
 }
 
@@ -346,7 +343,7 @@ function renderTimeline() {
                         <div class="flex-1 min-w-0">
                             <p class="editable-entry text-gray-800 leading-relaxed cursor-pointer hover:bg-white/50 rounded p-1 -m-1 transition-colors" data-entry-id="${entry.id}" title="💡 Double-click to edit this entry">${entry.description}</p>
                         </div>
-                        <span class="delete-btn opacity-0 group-hover:opacity-100 transition-all duration-200 text-gray-400 hover:text-red-500 cursor-pointer" data-entry-id="${entry.id}" title="Delete entry">
+                        <span class="delete-btn opacity-0 group-hover:opacity-100 transition-all duration-200 text-gray-400 hover:text-red-500 cursor-pointer" data-entry-id="${entry.id}" title="Delete this entry">
                             🗑️
                         </span>
                     </div>
